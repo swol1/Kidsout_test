@@ -4,6 +4,8 @@
 
 Ссылка на ТЗ https://paper.dropbox.com/doc/Kidsout.Backend.Test-x6tujxvDGgGx8bYYJdp7L
 
+---
+
 Приложение для создания объявлений о работе. Другие пользователи могут откликаться на это объявление со своей ценой. 
 
 Приложение на Ruby on Rails с JSON RESTful API
