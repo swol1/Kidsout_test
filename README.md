@@ -78,10 +78,10 @@ responses#accept
 
 Отмена отклика
 
-responses#accept
+responses#cancel
 
 ```
-/announcements/:announcement_id/responses
+/announcements/:announcement_id/responses/:id/cancel
 ```
 
 ## Оценка времени и фактическое
