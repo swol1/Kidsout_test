@@ -2,14 +2,8 @@ class ResponsesController < ApplicationController
   before_action :ensure_logged_in
 
   def create
-    Announcement.transaction do
-      @announcement = Announcement.active.find(params[:announcement_id])
-
-      @user_response = @announcement.responses.create(response_params)
-      @user_response.user = current_user
-
-      @user_response.save
-    end
+    @user_response =
+      CreateResponseService.new(params[:announcement_id], response_params, current_user).call
 
     if @user_response.persisted?
       render json: @user_response
@@ -19,25 +13,13 @@ class ResponsesController < ApplicationController
   end
 
   def cancel
-    Announcement.transaction do
-      @announcement = Announcement.active.find(params[:announcement_id])
-      @user_response = @announcement.responses.find(params[:id])
-
-      @user_response.update(status: :cancelled)
-    end
+    CancelResponseService.new(params[:announcement_id], params[:id]).call
 
     render json: @user_response
   end
 
   def accept
-    Announcement.transaction do
-      @announcement = current_user.announcements.find(params[:announcement_id])
-      @user_response = @announcement.responses.find(params[:id])
-
-      @announcement.update(status: :closed)
-      @announcement.responses.update_all(status: :declined)
-      @user_response.update(status: :accepted)
-    end
+    AcceptResponseService.new(params[:announcement_id], params[:id], current_user).call
 
     render json: @user_response
   end

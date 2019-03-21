@@ -24,12 +24,7 @@ class AnnouncementsController < ApplicationController
   end
 
   def cancel
-    Announcement.transaction do
-      @announcement = current_user.announcements.find(params[:id])
-
-      @announcement.responses.update_all(status: :declined)
-      @announcement.update(status: :cancelled)
-    end
+    CancelAnnouncementService.new(params[:id], current_user).call
 
     render json: @announcement
   end
