@@ -9,7 +9,7 @@ class CancelResponseService
       announcement = Announcement.active.lock("FOR SHARE").find(@announcement_id)
       user_response = announcement.responses.find(@id)
 
-      user_response.update(status: :cancelled)
+      user_response.tap { |u| u.update(status: :cancelled) }
     end
   end
 end

@@ -2,26 +2,29 @@ class ResponsesController < ApplicationController
   before_action :ensure_logged_in
 
   def create
-    @user_response =
+    user_response =
       CreateResponseService.new(params[:announcement_id], response_params, current_user).call
+    json_response = ResponseBlueprint.render user_response
 
-    if @user_response.persisted?
-      render json: @user_response
+    if user_response.persisted?
+      render json: json_response
     else
-      render json: @user_response.errors, status: :unprocessable_entity
+      render json: user_response.errors, status: :unprocessable_entity
     end
   end
 
   def cancel
-    CancelResponseService.new(params[:announcement_id], params[:id]).call
+    user_response = CancelResponseService.new(params[:announcement_id], params[:id]).call
+    json_response = ResponseBlueprint.render user_response
 
-    render json: @user_response
+    render json: json_response
   end
 
   def accept
-    AcceptResponseService.new(params[:announcement_id], params[:id], current_user).call
+    user_response = AcceptResponseService.new(params[:announcement_id], params[:id], current_user).call
+    json_response = ResponseBlueprint.render user_response
 
-    render json: @user_response
+    render json: json_response
   end
 
   private

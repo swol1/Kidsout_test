@@ -9,7 +9,7 @@ class CancelAnnouncementService
       announcement = @current_user.announcements.lock("FOR UPDATE").find(@id)
 
       announcement.responses.update_all(status: :declined)
-      announcement.update(status: :cancelled)
+      announcement.tap { |ann| ann.update(status: :cancelled) }
     end
   end
 end

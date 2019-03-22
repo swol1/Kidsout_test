@@ -12,7 +12,7 @@ class AcceptResponseService
 
       announcement.update(status: :closed)
       announcement.responses.update_all(status: :declined)
-      user_response.update(status: :accepted)
+      user_response.tap { |u| u.update(status: :accepted) }
     end
   end
 end

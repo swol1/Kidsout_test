@@ -33,3 +33,7 @@ module KidsoutTestApi
     config.api_only = true
   end
 end
+
+Blueprinter.configure do |config|
+  config.sort_fields_by = :definition
+end

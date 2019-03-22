@@ -2,31 +2,36 @@ class AnnouncementsController < ApplicationController
   before_action :ensure_logged_in, except: %i[index]
 
   def index
-    @announcements = Announcement.active
+    announcements =
+      AnnouncementBlueprint.render Announcement.active, view: :normal
 
-    render json: @announcements
+    render json: announcements
   end
 
   def show
-    @announcement = current_user.announcements.includes(:responses).find(params[:id])
+    announcement =
+      AnnouncementBlueprint.render current_user.announcements.includes(:responses).find(params[:id]),
+                                   view: :extended
 
-    render json: @announcement.as_json(include: :responses)
+    render json: announcement
   end
 
   def create
-    @announcement = current_user.announcements.create(announcement_params)
+    user_announcement = current_user.announcements.create(announcement_params)
+    announcement = AnnouncementBlueprint.render user_announcement, view: :normal
 
-    if @announcement.save
-      render json: @announcement
+    if user_announcement.save
+      render json: announcement
     else
-      render json: @announcement.errors, status: :unprocessable_entity
+      render json: user_announcement.errors, status: :unprocessable_entity
     end
   end
 
   def cancel
-    CancelAnnouncementService.new(params[:id], current_user).call
+    user_announcement = CancelAnnouncementService.new(params[:id], current_user).call
+    announcement = AnnouncementBlueprint.render user_announcement, view: :normal
 
-    render json: @announcement
+    render json: announcement
   end
 
   private
