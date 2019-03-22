@@ -1,5 +1,11 @@
 # Kidsout test
 
+Тестовое задание для https://kidsout.ru/
+
+Ссылка на ТЗ https://paper.dropbox.com/doc/Kidsout.Backend.Test-x6tujxvDGgGx8bYYJdp7L
+
+---
+
 Приложение для создания объявлений о работе. Другие пользователи могут откликаться на это объявление со своей ценой. 
 
 Приложение на Ruby on Rails с JSON RESTful API
@@ -72,10 +78,10 @@ responses#accept
 
 Отмена отклика
 
-responses#accept
+responses#cancel
 
 ```
-/announcements/:announcement_id/responses
+/announcements/:announcement_id/responses/:id/cancel
 ```
 
 ## Оценка времени и фактическое
